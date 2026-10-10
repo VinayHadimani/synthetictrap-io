@@ -2,6 +2,17 @@
 
 # SyntheticTrap
 
+
+
+
+
+https://github.com/user-attachments/assets/3b215324-3cee-4261-989a-05cf1b68c0e5
+
+
+
+
+
+
 ### Don't prevent breaches. Catch them in seconds.
 
 **Industry average breach detection time: 197 days.**
