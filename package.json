@@ -1,6 +1,16 @@
 {
   "name": "synthetictrap-io",
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "description": "AI-honeypot breach detection — catch database compromises in seconds, not months.",
+  "keywords": [
+    "cybersecurity",
+    "honeypot",
+    "breach-detection",
+    "nextjs",
+    "supabase",
+    "gemini",
+    "synthetic-data"
+  ],
   "private": true,
   "scripts": {
     "dev": "next dev",
