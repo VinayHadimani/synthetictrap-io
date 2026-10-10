@@ -1,17 +1,7 @@
 <div align="center">
 
 # SyntheticTrap
-
-
-
-
-
 https://github.com/user-attachments/assets/3b215324-3cee-4261-989a-05cf1b68c0e5
-
-
-
-
-
 
 ### Don't prevent breaches. Catch them in seconds.
 
@@ -185,23 +175,29 @@ The production demo currently ships with **19 honeypots** for exactly this reaso
 
 ---
 
-## Design notes
+## Design
 
-Three deliberately different visual identities, one per surface:
+One design system across all surfaces.
 
-| Surface | Palette | Feel |
-|---|---|---|
-| `/` landing | Cream `#FFF0DF` + charcoal ink + one violet device mockup | Apple-adjacent, calm, premium |
-| `/dashboard` | Zinc-950 + red accents + monospace | Security operations center |
-| `/trap` | Pitch black + neon green + scanlines | Dark-web marketplace |
+- **Palette**: cream `#FFF0DF` background, charcoal ink `#292524` text,
+  `red-600` for danger/breach, `emerald-600` for success, `amber-600` for
+  warnings, `blue-600` for info.
+- **Typography**: Inter for headings and body, JetBrains Mono for technical
+  values (IPs, card numbers, timestamps, transaction IDs).
+- **Surfaces**: white cards on cream, `rounded-xl`, hairline `border-ink/8`,
+  no drop shadows.
+- **Buttons**: charcoal (`bg-ink-deep`) for primary, `red-600` for the
+  dangerous marketplace CTA, cream with border for secondary.
 
-The contrast is intentional — it tells the story in three color systems: **consumer product → serious security tooling → attacker's playground.**
+The marketplace page keeps its "attacker" attitude through copy ("no refunds",
+"use Monero"), the skull icon, and the `.onion` branding — not through a
+different color scheme.
 
 ---
 
 ## License
 
-MIT — see [LICENSE](LICENSE) if present, otherwise free to use, modify, and ship.
+MIT — see [LICENSE](LICENSE).
 
 ---
 
