@@ -1,17 +1,14 @@
 "use client";
 
-export const dynamic = "force-dynamic";
-
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { RefreshCw, Trash2 } from "lucide-react";
+import { Bug, RefreshCw, Trash2 } from "lucide-react";
 
 import { createClient } from "@/lib/supabase/client";
 import { LiveAlertBanner, type BreachEvent } from "@/components/LiveAlertBanner";
 import { StatsCards, type StatsShape } from "@/components/StatsCards";
 import { BreachTimeline, type BreachRow } from "@/components/BreachTimeline";
 import { PersonaGrid, type PersonaRow } from "@/components/PersonaGrid";
-import { Logo } from "@/components/Logo";
 
 interface Stats extends StatsShape {
   avg_detect_ms: number;
@@ -41,10 +38,9 @@ export default function DashboardPage() {
   const [liveAlert, setLiveAlert] = useState<BreachEvent | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Persona lookup so realtime events can resolve names without a fetch.
-  const personasRef = useRef<Map<string, { name: string; email: string; city: string }>>(
-    new Map()
-  );
+  const personasRef = useRef<
+    Map<string, { name: string; email: string; city: string }>
+  >(new Map());
 
   const supabase = createClient();
 
@@ -61,8 +57,10 @@ export default function DashboardPage() {
       setPersonas(personaList);
       setStats(s as Stats);
 
-      // Build persona lookup for realtime resolution
-      const map = new Map<string, { name: string; email: string; city: string }>();
+      const map = new Map<
+        string,
+        { name: string; email: string; city: string }
+      >();
       for (const row of personaList) {
         map.set(row.id, { name: row.name, email: row.email, city: row.city });
       }
@@ -86,11 +84,7 @@ export default function DashboardPage() {
           const row = payload.new as RealtimeRow;
           const personaMeta = personasRef.current.get(row.persona_id);
 
-          const enriched: BreachRow = {
-            ...row,
-            personas: personaMeta ?? null,
-          };
-
+          const enriched: BreachRow = { ...row, personas: personaMeta ?? null };
           setBreaches((prev) => [enriched, ...prev]);
 
           const alertEvent: BreachEvent = {
@@ -105,10 +99,7 @@ export default function DashboardPage() {
           };
           setLiveAlert(alertEvent);
 
-          setStats((prev) => ({
-            ...prev,
-            breaches: prev.breaches + 1,
-          }));
+          setStats((prev) => ({ ...prev, breaches: prev.breaches + 1 }));
         }
       )
       .subscribe((status) => {
@@ -123,46 +114,54 @@ export default function DashboardPage() {
   const clearBreaches = async () => {
     await fetch("/api/breaches", { method: "DELETE" });
     setBreaches([]);
-    setStats((prev) => ({ ...prev, breaches: 0, avg_detect_display: "—", avg_detect_ms: 0 }));
+    setStats((prev) => ({
+      ...prev,
+      breaches: 0,
+      avg_detect_display: "—",
+      avg_detect_ms: 0,
+    }));
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-zinc-950 text-zinc-100 flex items-center justify-center">
+      <div className="min-h-screen bg-cream text-ink flex items-center justify-center">
         <div className="text-center">
-          <RefreshCw className="mx-auto h-8 w-8 animate-spin text-zinc-500" />
-          <p className="mt-3 text-sm text-zinc-500">Loading dashboard…</p>
+          <RefreshCw className="mx-auto h-8 w-8 animate-spin text-ink/40" />
+          <p className="mt-3 text-sm text-ink/60">Loading dashboard…</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100">
+    <div className="min-h-screen bg-cream text-ink">
       <LiveAlertBanner event={liveAlert} onDismiss={() => setLiveAlert(null)} />
 
-      <header className="border-b border-zinc-800 bg-zinc-900/50 backdrop-blur">
+      <header className="border-b border-ink/8 bg-cream/80 backdrop-blur sticky top-0 z-40">
         <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Logo variant="dark" size={32} />
+          <Link href="/" className="flex items-center gap-3">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-red-500/15">
+              <Bug className="h-5 w-5 text-red-600" />
+            </div>
             <div>
-              <h1 className="text-lg font-bold">SyntheticTrap</h1>
-              <p className="text-xs text-zinc-500">
+              <h1 className="text-lg font-bold tracking-tight">SyntheticTrap</h1>
+              <p className="text-xs text-ink/50">
                 Breach detection via AI honeypots
               </p>
             </div>
-          </div>
+          </Link>
+
           <div className="flex items-center gap-4">
             <Link
               href="/trap"
               target="_blank"
-              className="text-xs text-zinc-400 hover:text-red-400 underline underline-offset-4 transition-colors"
+              className="text-xs text-ink/60 hover:text-ink underline underline-offset-4 transition-colors font-medium"
             >
               Open marketplace →
             </Link>
             <button
               onClick={clearBreaches}
-              className="flex items-center gap-1 text-xs text-zinc-500 hover:text-zinc-300 transition-colors"
+              className="flex items-center gap-1 text-xs text-ink/50 hover:text-ink transition-colors"
             >
               <Trash2 className="h-3 w-3" />
               Clear breaches
@@ -171,7 +170,7 @@ export default function DashboardPage() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-7xl px-6 py-6 space-y-6">
+      <main className="mx-auto max-w-7xl px-6 py-8 space-y-6">
         <StatsCards stats={stats} />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -179,13 +178,14 @@ export default function DashboardPage() {
           <PersonaGrid personas={personas} />
         </div>
 
-        <div className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-4">
-          <p className="text-xs text-zinc-500 text-center">
+        <div className="rounded-xl border border-ink/8 bg-white p-4">
+          <p className="text-xs text-ink/50 text-center">
             Industry average breach detection time:{" "}
-            <span className="font-mono text-red-400">197 days</span> · Cost per
-            breach: <span className="font-mono text-red-400">$4.45M</span> ·
+            <span className="font-mono text-red-600 font-semibold">197 days</span>{" "}
+            · Cost per breach:{" "}
+            <span className="font-mono text-red-600 font-semibold">$4.45M</span> ·
             SyntheticTrap detects in{" "}
-            <span className="font-mono text-emerald-400">seconds</span>
+            <span className="font-mono text-emerald-600 font-semibold">seconds</span>
           </p>
         </div>
       </main>

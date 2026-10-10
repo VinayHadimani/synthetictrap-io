@@ -40,9 +40,8 @@ export function LiveAlertBanner({ event, onDismiss }: Props) {
 
   const ms = event.detected_within_ms || 0;
   const secs = (ms / 1000).toFixed(1);
-  const speedup = ms > 0
-    ? Math.round((197 * 86_400 * 1000) / ms).toLocaleString()
-    : "—";
+  const speedup =
+    ms > 0 ? Math.round((197 * 86_400 * 1000) / ms).toLocaleString() : "—";
 
   const handleClose = () => {
     setVisible(false);
@@ -53,74 +52,105 @@ export function LiveAlertBanner({ event, onDismiss }: Props) {
     <div
       role="alertdialog"
       aria-live="assertive"
-      className={`fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm transition-opacity duration-300 ${
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-ink/85 backdrop-blur-sm transition-opacity duration-300 ${
         visible ? "opacity-100" : "opacity-0"
       }`}
     >
-      <div className="relative w-full max-w-2xl rounded-2xl border-2 border-red-500 bg-zinc-950 p-8 shadow-[0_0_60px_rgba(239,68,68,0.6)] animate-glow">
+      <div
+        className="relative w-full max-w-2xl rounded-2xl border-4 border-red-500 bg-cream p-8"
+        style={{
+          boxShadow:
+            "0 0 0 1px rgba(239,68,68,0.3), 0 20px 60px rgba(239,68,68,0.4)",
+        }}
+      >
         <button
           onClick={handleClose}
           aria-label="Dismiss alert"
-          className="absolute right-4 top-4 text-zinc-400 hover:text-white transition-colors"
+          className="absolute right-4 top-4 text-ink/40 hover:text-ink transition-colors"
         >
           <X className="h-5 w-5" />
         </button>
 
         <div className="flex items-center gap-4">
-          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-red-500/20 animate-pulse-slow">
-            <AlertCircle className="h-8 w-8 text-red-500" />
+          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-red-500/15">
+            <AlertCircle className="h-8 w-8 text-red-600" />
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-red-500">BREACH DETECTED</h2>
-            <p className="text-sm text-zinc-400">
+            <h2 className="text-2xl font-bold text-red-600 tracking-tight">
+              BREACH DETECTED
+            </h2>
+            <p className="text-sm text-ink/60">
               Synthetic persona triggered — database compromised
             </p>
           </div>
         </div>
 
-        <div className="mt-6 grid grid-cols-2 gap-4 font-mono text-sm">
-          <div>
-            <p className="text-zinc-500">PERSONA</p>
-            <p className="text-white">{event.personas?.name || "Unknown"}</p>
-          </div>
-          <div>
-            <p className="text-zinc-500">EMAIL</p>
-            <p className="text-white truncate">
-              {event.personas?.email || "Unknown"}
-            </p>
-          </div>
-          <div>
-            <p className="text-zinc-500">SOURCE IP</p>
-            <p className="text-white">{event.source_ip}</p>
-          </div>
-          <div>
-            <p className="text-zinc-500">LOCATION</p>
-            <p className="text-white">
-              {event.attacker_location
+        <div className="mt-6 grid grid-cols-2 gap-4">
+          <Field label="PERSONA" value={event.personas?.name || "Unknown"} mono />
+          <Field
+            label="EMAIL"
+            value={event.personas?.email || "Unknown"}
+            mono
+            truncate
+          />
+          <Field label="SOURCE IP" value={event.source_ip} mono />
+          <Field
+            label="LOCATION"
+            value={
+              event.attacker_location
                 ? `${event.attacker_location.city || "?"}, ${event.attacker_location.country || "?"}`
-                : "Unknown"}
+                : "Unknown"
+            }
+            mono
+          />
+          <Field label="TRIGGER" value={event.trigger_type.toUpperCase()} mono />
+          <div>
+            <p className="text-[11px] uppercase tracking-wider text-ink/50 font-mono">
+              TIME TO DETECT
             </p>
-          </div>
-          <div>
-            <p className="text-zinc-500">TRIGGER</p>
-            <p className="text-white uppercase">{event.trigger_type}</p>
-          </div>
-          <div>
-            <p className="text-zinc-500">TIME TO DETECT</p>
-            <p className="text-emerald-400 font-bold">{secs}s</p>
+            <p className="font-mono text-sm font-bold text-emerald-600">
+              {secs}s
+            </p>
           </div>
         </div>
 
-        <div className="mt-6 rounded-lg bg-red-500/10 p-3 text-center">
-          <p className="text-sm text-red-300">
+        <div className="mt-6 rounded-lg bg-red-50 border border-red-500/20 p-3 text-center">
+          <p className="text-sm text-red-700">
             Industry average: <span className="font-bold">197 days</span>
             {" · "}
-            SyntheticTrap: <span className="font-bold text-emerald-400">{secs}s</span>
+            SyntheticTrap: <span className="font-bold text-emerald-600">{secs}s</span>
             {" · "}
-            Improvement: <span className="font-bold text-emerald-400">{speedup}x</span>
+            Improvement: <span className="font-bold text-emerald-600">{speedup}x</span>
           </p>
         </div>
       </div>
+    </div>
+  );
+}
+
+function Field({
+  label,
+  value,
+  mono = false,
+  truncate = false,
+}: {
+  label: string;
+  value: string;
+  mono?: boolean;
+  truncate?: boolean;
+}) {
+  return (
+    <div>
+      <p className="text-[11px] uppercase tracking-wider text-ink/50 font-mono">
+        {label}
+      </p>
+      <p
+        className={`text-sm text-ink ${mono ? "font-mono" : ""} ${
+          truncate ? "truncate" : ""
+        }`}
+      >
+        {value}
+      </p>
     </div>
   );
 }

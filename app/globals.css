@@ -3,50 +3,37 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 html,
 body {
-  background-color: #09090b;
-  color: #f4f4f5;
+  background-color: #FFF0DF;
+  color: #292524;
 }
 
-/* Custom scrollbar — forensic/terminal feel */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #18181b;
+  background: #FFF0D8;
 }
 ::-webkit-scrollbar-thumb {
-  background: #3f3f46;
+  background: #292524;
+  opacity: 0.2;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #52525b;
+  background: #1C1917;
 }
 
-/* Utility: text truncation with ellipsis (used in breach cards) */
 .truncate-line {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-/* Utility: subtle scanline effect for hacker surfaces */
-.scanlines {
-  background-image: repeating-linear-gradient(
-    0deg,
-    rgba(0, 255, 100, 0.03) 0px,
-    rgba(0, 255, 100, 0.03) 1px,
-    transparent 1px,
-    transparent 3px
-  );
-}
-
-/* Utility: prevent iOS/Android autozoom on form inputs */
 input,
 select,
 textarea {
