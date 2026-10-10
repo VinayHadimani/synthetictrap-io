@@ -25,15 +25,6 @@ const LAST_NAMES = [
   "Singh","Kaur","Kapoor","Chopra","Malhotra","Bose","Das","Banerjee",
 ];
 
-const CITIES = [
-  { city: "Mumbai", state: "Maharashtra" },
-  { city: "Delhi", state: "Delhi" },
-  { city: "Bangalore", state: "Karnataka" },
-  { city: "Pune", state: "Maharashtra" },
-  { city: "Hyderabad", state: "Telangana" },
-  { city: "Chennai", state: "Tamil Nadu" },
-];
-
 function pick<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
 }

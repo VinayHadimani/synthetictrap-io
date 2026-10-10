@@ -138,7 +138,7 @@ export async function generatePersona(): Promise<Persona> {
   let parsed: unknown;
   try {
     parsed = JSON.parse(text);
-  } catch (e) {
+  } catch {
     throw new Error(
       `Gemini returned non-JSON. First 200 chars: ${text.slice(0, 200)}`
     );

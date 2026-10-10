@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { Bug, RefreshCw, Trash2 } from "lucide-react";
+import { RefreshCw, Trash2 } from "lucide-react";
 
 import { createClient } from "@/lib/supabase/client";
 import { LiveAlertBanner, type BreachEvent } from "@/components/LiveAlertBanner";
